@@ -69,35 +69,22 @@ My thoughts:
 I think this is a great example. ChatGPT provided me a table with exactly the information I wanted. I also love that it put a smiley face at the end.  
 
 
-**Example 3**  
-Question: Which students have done the best?
+**Example 3 (Single Domain)**  
+What student has the best grades?
+Question: What student has the best grades?
 
 SQL Generated:  
-SELECT s.StudentId, s.FirstName, s.LastName, AVG(CASE 
-                                                WHEN sc.StudentGrade = 'A' THEN 4.0
-                                                WHEN sc.StudentGrade = 'A-' THEN 3.7
-                                                WHEN sc.StudentGrade = 'B+' THEN 3.3
-                                                WHEN sc.StudentGrade = 'B' THEN 3.0
-                                                WHEN sc.StudentGrade = 'B-' THEN 2.7
-                                                WHEN sc.StudentGrade = 'C+' THEN 2.3
-                                                WHEN sc.StudentGrade = 'C' THEN 2.0
-                                                WHEN sc.StudentGrade = 'C-' THEN 1.7
-                                                WHEN sc.StudentGrade = 'D+' THEN 1.3
-                                                WHEN sc.StudentGrade = 'D' THEN 1.0
-                                                WHEN sc.StudentGrade = 'F' THEN 0.0
-                                                ELSE NULL -- Consider any other case as NULL (or do differently)
-                                              END) AS GPA
+SELECT s.FirstName, s.LastName
 FROM Student s
 JOIN StudentCourse sc ON s.StudentId = sc.StudentId
-GROUP BY s.StudentId, s.FirstName, s.LastName
-ORDER BY GPA DESC
+WHERE sc.StudentGrade = (SELECT MIN(StudentGrade) FROM StudentCourse)
 LIMIT 1;
 
 Friendly Response:  
-Of course! Based on the results from the database, it looks like Sarah Jones has done the best. Well done, Sarah! 😊
+Sure thing! The student with the best grades is John Doe. Great job, John! 😊🎓
 
-My thoughts:  
-I gave this example to see what this model would do with a more ambiguous question. For example, I didn't define what 'Best' is. Is it the number of classes taken? Is it the grades recieved? These things considered, I'm really impressed by the GPA cases that it assigned to grades in sql query. One issue however, it decided that Sarah had done the best, however, Sarah got that ranking because she hasn't actualy finished any classes, all of her grades are NULL. I don't see this as sa major issue however because to fix this you could just adjust the query to assign 0.0 to NULL grades.  
+My thoughts: I think that this question and response did well! This was a quick way to obtain the student with the best grades in a single query
+ 
 
 **Example 4**  
 Question: How did Mike Williams do in Web Dev?
