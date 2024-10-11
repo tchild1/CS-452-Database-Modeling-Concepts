@@ -1,1 +1,7 @@
 .env
+__pycache__/
+launch.json
+
+# all data here, wayyyy too big
+documents/
+embedding/
